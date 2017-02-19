@@ -1,6 +1,7 @@
 source 'http://rubygems.org'
 
 gem 'sinatra'
+gem 'sinatra-contrib'
 gem 'rake'
 gem 'require_all'
 gem 'thin'
