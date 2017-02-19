@@ -7,10 +7,12 @@ gem 'require_all'
 gem 'thin'
 gem 'bcrypt'
 gem 'tux'
+gem 'octokit'
+gem 'tracker_api'
 
 group :development do
   gem 'shotgun'
-  gem 'pry'
+  gem 'pry-byebug'
 end
 
 group :test do

@@ -1,11 +1,11 @@
 class PivotalStatusesController < ApplicationController
   before do
-    @client ||= Octokit::Client.new(access_token: ACCESS_TOKEN)
+    @github ||= Octokit::Client.new(access_token: GITHUB_ACCESS_TOKEN)
+    @pivotal ||= PivotalClient.new(project_id: PIVOTAL_PROJECT_ID)
   end
 
   post '/event_handler' do
     @payload = JSON.parse(params[:payload])
-
     case request.env['HTTP_X_GITHUB_EVENT']
     when 'pull_request'
       if @payload['action'] == 'opened'
@@ -17,7 +17,8 @@ class PivotalStatusesController < ApplicationController
   helpers do
     def process_pull_request(pull_request)
       @client.create_status(pull_request['base']['repo']['full_name'], pull_request['head']['sha'], 'pending')
-      sleep 2 # do busy work...
+      puts pull_request.keys
+      # @pivotal.accepted?()
       @client.create_status(pull_request['base']['repo']['full_name'], pull_request['head']['sha'], 'success')
       puts 'Pull request processed!'
     end
