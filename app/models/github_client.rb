@@ -3,7 +3,15 @@ class GithubClient
     @client = Octokit::Client.new(access_token: GITHUB_ACCESS_TOKEN)
   end
 
-  def set_state(pull_request, state: '', options: {})
+  def process_pull_request(pull_request)
+    @pivotal = PivotalClient.new(pull_request)
+
+    set_status(pull_request, state: 'pending')
+    set_status(pull_request, state: 'error') unless @pivotal
+    status_per_pivotal(pull_request)
+  end
+
+  def set_status(pull_request, state: '', options: {})
     @client.create_status \
       pull_request['base']['repo']['full_name'],
       pull_request['head']['sha'],
@@ -11,21 +19,18 @@ class GithubClient
       options
   end
 
-  def set_pivotal_state(pull_request, pivotal_project: {})
-    state = approved?(pivotal_project.accepted?)
-    options = pivotal_story_information(pivotal_project)
-    set_state(pull_request, state: state, options: options)
+  def status_per_pivotal(pull_request)
+    set_status \
+      pull_request,
+      state: @pivotal.accepted? ? 'success' : 'failure',
+      options: pivotal_story_information
   end
 
   private
 
-  def approved?(pivotal_state)
-    pivotal_state ? 'success' : 'failure'
-  end
-
-  def pivotal_story_information(pivotal_project)
+  def pivotal_story_information
     {
-      target_url: pivotal_project.story.url,
+      target_url: @pivotal.story.url,
       # description: "Pivotal Story",
       context: 'Pivotal Acceptance State'
     }
