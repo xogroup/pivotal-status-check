@@ -5,10 +5,10 @@ class GithubClient
 
   def process_pull_request(pull_request)
     @pivotal = PivotalClient.new(pull_request)
-
-    set_status(pull_request, state: 'pending')
-    set_status(pull_request, state: 'error') unless @pivotal
-    status_per_pivotal(pull_request)
+    set_status \
+      pull_request,
+      state: @pivotal.accepted? ? 'success' : 'failure',
+      options: pivotal_story_information
   end
 
   def set_status(pull_request, state: '', options: {})
@@ -17,13 +17,6 @@ class GithubClient
       pull_request['head']['sha'],
       state,
       options
-  end
-
-  def status_per_pivotal(pull_request)
-    set_status \
-      pull_request,
-      state: @pivotal.accepted? ? 'success' : 'failure',
-      options: pivotal_story_information
   end
 
   private

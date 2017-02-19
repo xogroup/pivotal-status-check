@@ -1,0 +1,15 @@
+{
+  "payload":
+    {
+    "action": "synchronize",
+    "number": 1,
+    "pull_request": {
+      "head": {
+        "label": "xogroup:feature/add_pivotal_handler",
+        "ref": "feature/add_pivotal_handler",
+        "sha": "ba337a3b508599d9dfd28420eff2a8d42a90072f"
+        }
+      }
+    }
+  }
+}
