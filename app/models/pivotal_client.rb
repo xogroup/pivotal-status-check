@@ -1,5 +1,5 @@
 # Temporary hack for the pivotal gem since it's bugged
-require 'tracker_api/endpoints/story'
+# require 'tracker_api/endpoints/story'
 
 class PivotalClient
   attr_accessor :project, :story
@@ -7,6 +7,7 @@ class PivotalClient
     client = TrackerApi::Client.new(token: PIVOTAL_TRACKER_TOKEN)
     @project = client.project(PIVOTAL_PROJECT_ID)
     @pull_request = pull_request
+    require "pry"; binding.pry
     @story = @project.story(story_id)
   end
 

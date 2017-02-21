@@ -13,11 +13,16 @@ describe 'GithubClient' do
             }
           }
         end
+
+        let(:pivotal_client) { PivotalClient.new(pull_request) }
+        let(:tracker_api) { double tracker_api }
+
         before(:each) do
-          allow(PivotalClient).to receive(:new).with(pull_request)
+          allow(PivotalClient).to receive(:new).with(pull_request).and_return(pivotal_client)
+          allow(TrackerApi::Client).to receive(:new).with(token).and_return(tracker_api)
+          allow(TrackerApi::Endpoints::Story).to receive_message_chain(:new, :get).and_return(TrackerApi::Resources::Story.new())
           allow(PivotalClient).to receive(:accepted?).and_return true
-          project = allow(PivotalClient).to receive(:project).with(123)
-          allow(PivotalClient).to receive_message_chain(:project, :story).and_return {}
+          allow(PivotalClient).to receive_message_chain(:project, :story) { pivotal_client }
         end
         it 'sets the status to success' do
           subject.process_pull_request(pull_request)
