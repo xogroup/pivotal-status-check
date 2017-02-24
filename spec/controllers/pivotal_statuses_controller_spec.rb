@@ -9,6 +9,7 @@ describe PivotalStatusesController do
   describe 'When the Pivotal State' do
     describe 'is accepted' do
       before do
+        allow_any_instance_of(GithubClient).to receive(:set_status)
         allow_any_instance_of(GithubClient).to receive(:process_pull_request)
           .and_return(state: 'success')
       end
@@ -20,6 +21,7 @@ describe PivotalStatusesController do
     end
     describe 'is not accepted' do
       before do
+        allow_any_instance_of(GithubClient).to receive(:set_status)
         allow_any_instance_of(GithubClient).to receive(:process_pull_request)
           .and_return(state: 'failure')
       end
