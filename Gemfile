@@ -9,6 +9,7 @@ gem 'sinatra-contrib'
 gem 'thin'
 gem 'tracker_api'
 gem 'tux'
+gem 'dotenv'
 
 group :development do
   gem 'pry-byebug'

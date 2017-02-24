@@ -27,6 +27,7 @@ GEM
     descendants_tracker (0.0.4)
       thread_safe (~> 0.3, >= 0.3.1)
     diff-lcs (1.3)
+    dotenv (2.2.0)
     equalizer (0.0.11)
     eventmachine (1.2.2)
     excon (0.55.0)
@@ -138,6 +139,7 @@ PLATFORMS
 DEPENDENCIES
   bcrypt
   capybara
+  dotenv
   octokit
   pry-byebug
   rack-test
