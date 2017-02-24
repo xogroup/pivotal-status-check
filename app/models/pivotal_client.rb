@@ -4,7 +4,6 @@
 class PivotalClient
   attr_accessor :project, :story
   def initialize(pull_request)
-    require "pry"; binding.pry
     client = TrackerApi::Client.new(token: PIVOTAL_TRACKER_TOKEN)
     @project = client.project(PIVOTAL_PROJECT_ID)
     @pull_request = pull_request
