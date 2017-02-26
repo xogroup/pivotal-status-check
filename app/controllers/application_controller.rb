@@ -1,5 +1,6 @@
 require './config/environment'
-
+require 'sinatra'
+require 'json'
 class ApplicationController < Sinatra::Base
   # configure do
   #   set :public_folder, 'public'

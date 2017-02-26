@@ -1,7 +1,13 @@
 class PivotalStatusesController < ApplicationController
   post '/event_handler' do
-    payload = JSON.parse(params[:payload])
-    puts 'Well, it worked!'
-    render :success, payload
+    @github_client ||= GithubClient.new
+    @payload = JSON.parse(params[:payload])
+    case request.env['HTTP_X_GITHUB_EVENT']
+    when 'pull_request'
+      if %w(opened reopened synchronize).include? @payload['action']
+        @github_client.set_status(@payload['pull_request'], state: 'pending')
+        @github_client.process_pull_request(@payload['pull_request'])
+      end
+    end
   end
 end

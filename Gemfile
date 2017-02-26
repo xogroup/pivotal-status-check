@@ -1,20 +1,23 @@
 source 'http://rubygems.org'
 
-gem 'sinatra'
+gem 'bcrypt'
+gem 'octokit'
 gem 'rake'
 gem 'require_all'
+gem 'sinatra'
+gem 'sinatra-contrib'
 gem 'thin'
-gem 'bcrypt'
+gem 'tracker_api'
 gem 'tux'
+gem 'dotenv'
 
 group :development do
+  gem 'pry-byebug'
   gem 'shotgun'
-  gem 'pry'
 end
 
 group :test do
-  gem 'rspec'
   gem 'capybara'
   gem 'rack-test'
-  gem 'database_cleaner', git: 'https://github.com/bmabey/database_cleaner.git'
+  gem 'rspec'
 end
