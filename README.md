@@ -28,7 +28,7 @@ Our pull requests get merged into Master (and deployed to Production) once they 
     * Github Enterprise API URL (* yourdomain.com/api/v3*) [**GITHUB_ENTERPRISE_API**]
 1. Set up your [webhook](https://developer.github.com/webhooks/) on your Github repository
   * Payload URL:
-    * ** YOUR_APPLICATION_URL/accepted_status_check**
+    * **YOUR_APPLICATION_URL/accepted_status_check**
     * ***Let me select individual events.***
     * Choose the following events:
       * Pull request
