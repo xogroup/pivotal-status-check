@@ -1,17 +1,15 @@
 source 'http://rubygems.org'
 
-gem 'bcrypt'
 gem 'octokit'
-gem 'rake'
 gem 'require_all'
 gem 'sinatra'
 gem 'sinatra-contrib'
 gem 'thin'
 gem 'tracker_api'
 gem 'tux'
-gem 'dotenv'
 
 group :development do
+  gem 'dotenv'
   gem 'pry-byebug'
   gem 'shotgun'
 end

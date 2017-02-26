@@ -1,6 +1,8 @@
 class GithubClient
   def initialize
-    @client = Octokit::Client.new(access_token: GITHUB_ACCESS_TOKEN)
+    @client = Octokit::Client.new \
+      access_token: GITHUB_ACCESS_TOKEN,
+      api_endpoint: GITHUB_ENTERPRISE_API
   end
 
   def process_pull_request(pull_request)
@@ -16,7 +18,7 @@ class GithubClient
       pull_request['base']['repo']['full_name'],
       pull_request['head']['sha'],
       state,
-      options
+      options.merge(context: 'Pivotal Acceptance State')
   end
 
   private

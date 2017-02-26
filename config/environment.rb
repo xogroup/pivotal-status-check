@@ -5,11 +5,8 @@ Bundler.require(:default, ENV['SINATRA_ENV'])
 
 require 'dotenv/load'
 
-# ActiveRecord::Base.establish_connection(
-#   :adapter => "sqlite3",
-#   :database => "db/#{ENV['SINATRA_ENV']}.sqlite"
-# )
 GITHUB_ACCESS_TOKEN = ENV['GITHUB_ACCESS_TOKEN']
 PIVOTAL_TRACKER_TOKEN = ENV['PIVOTAL_TRACKER_TOKEN']
 PIVOTAL_PROJECT_ID = ENV['PIVOTAL_PROJECT_ID']
+GITHUB_ENTERPRISE_API = ENV['GITHUB_ENTERPRISE_API']
 require_all 'app'
