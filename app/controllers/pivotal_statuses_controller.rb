@@ -1,5 +1,5 @@
 class PivotalStatusesController < ApplicationController
-  post '/event_handler' do
+  post '/accepted_status_check' do
     @github_client ||= GithubClient.new
     @payload = JSON.parse(params[:payload])
     case request.env['HTTP_X_GITHUB_EVENT']
