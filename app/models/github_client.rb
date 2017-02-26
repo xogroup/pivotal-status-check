@@ -13,12 +13,12 @@ class GithubClient
       options: pivotal_story_information
   end
 
-  def set_status(pull_request, state: '', options: {})
+  def set_status(pull_request, state: '')
     @client.create_status \
       pull_request['base']['repo']['full_name'],
       pull_request['head']['sha'],
       state,
-      options
+      context: 'Pivotal Acceptance State'
   end
 
   private
