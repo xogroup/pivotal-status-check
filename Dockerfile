@@ -1,6 +1,6 @@
 FROM ruby:2.4.0-alpine
 
-RUN apk --update add --virtual build-dependencies build-base
+RUN apk --update add --virtual build-dependencies build-base bash
 
 # Install gems
 ENV APP_HOME /app
@@ -14,6 +14,6 @@ RUN bundle install
 COPY . $APP_HOME
 
 # Start server
-ENV PORT 3000
-EXPOSE 3000
+ENV PORT 9393
+EXPOSE 9393
 CMD ['shotgun']
