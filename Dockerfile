@@ -9,6 +9,7 @@ RUN mkdir $APP_HOME
 WORKDIR $APP_HOME
 COPY Gemfile* $APP_HOME/
 RUN bundle install
+RUN gem install shotgun
 
 # Upload source
 COPY . $APP_HOME
@@ -16,4 +17,4 @@ COPY . $APP_HOME
 # Start server
 ENV PORT 9393
 EXPOSE 9393
-CMD ['shotgun']
+CMD ["bundle", "exec", "shotgun", "--host", "0.0.0.0"]
