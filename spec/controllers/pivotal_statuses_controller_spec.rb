@@ -15,7 +15,7 @@ describe PivotalStatusesController do
       end
       it 'sets the status to success' do
         header 'X-GitHub-Event', 'pull_request'
-        post '/event_handler', payload: payload
+        post '/accepted_status_check', payload: payload
         expect(last_response.body).to include('success')
       end
     end
@@ -27,7 +27,7 @@ describe PivotalStatusesController do
       end
       it 'sets the status to failure' do
         header 'X-GitHub-Event', 'pull_request'
-        post '/event_handler', payload: payload
+        post '/accepted_status_check', payload: payload
         expect(last_response.body).to include('failure')
       end
     end

@@ -16,13 +16,25 @@ Our pull requests get merged into Master (and deployed to Production) once they 
 
 ## Usage:
 
-You can simply pull down the image hosted on [Dockerhub](https://hub.docker.com/r/justneph/pivotal-status-check/) and deploy.
+1. Pull down docker image:  [Dockerhub](https://hub.docker.com/r/justneph/pivotal-status-check/)
+1. Set up your deployment environment (```eb create```, etc)
+1. Run the release command related to that application deployment environment
+1. Setup your environment with three environment variables
 
-Afterwards, you'll need to setup your environment with three environment variables
+  * Github Token [**GITHUB_ACCESS_TOKEN**]
+  * Pivotal API Token [**PIVOTAL_TRACKER_TOKEN**]
+  * Pivotal Project ID [**PIVOTAL_PROJECT_ID**]
+1. Set up your [webhook](https://developer.github.com/webhooks/) on your Github repository
+  * Payload URL:
+    * **  YOUR_APPLICATION_URL/accepted_status_check **
+    * *** Let me select individual events. ***
+    * Choose the following events:
+      * Pull request
+      * Push
+1. ...
+1. Profit
 
-* Github Token [**GITHUB_ACCESS_TOKEN**]
-* Pivotal API Token [**PIVOTAL_TRACKER_TOKEN**]
-* Pivotal Project ID [**PIVOTAL_PROJECT_ID**]
+### Note
 
 You will need to deploy a **NEW** instance for **EACH** Pivotal Project Id.
 
