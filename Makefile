@@ -6,4 +6,9 @@ test: build
 	docker run pivotal-status-check:latest rspec
 push:
 	docker push justneph/pivotal-status-check
+
 release: build tag push
+eb_release: build tag
+	eb deploy
+heroku_release: build tag
+	git push heroku master
