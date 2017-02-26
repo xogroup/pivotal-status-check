@@ -24,16 +24,15 @@ Our pull requests get merged into Master (and deployed to Production) once they 
   * Pivotal API Token [**PIVOTAL_TRACKER_TOKEN**]
   * Pivotal Project ID [**PIVOTAL_PROJECT_ID**]
 
-  * ** For Github Enterprise Support: **
+  * **For Github Enterprise Support:**
     * Github Enterprise API URL (* yourdomain.com/api/v3*) [**GITHUB_ENTERPRISE_API**]
 1. Set up your [webhook](https://developer.github.com/webhooks/) on your Github repository
   * Payload URL:
-    * **  YOUR_APPLICATION_URL/accepted_status_check **
-    * *** Let me select individual events. ***
+    * ** YOUR_APPLICATION_URL/accepted_status_check**
+    * ***Let me select individual events.***
     * Choose the following events:
       * Pull request
-      * Push
-1. Github branch format with Pivotal Story ID at the end (snakecase) (* eg: * ```some_feature_PIVOTAL_STORY_ID``` )
+1. Github branch format with Pivotal Story ID at the end (snakecase) (*eg:* ```some_feature_PIVOTAL_STORY_ID``` )
 
 1. Profit
 
