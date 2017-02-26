@@ -1,6 +1,8 @@
 class GithubClient
   def initialize
-    @client = Octokit::Client.new(access_token: GITHUB_ACCESS_TOKEN)
+    @client = Octokit::Client.new \
+      access_token: GITHUB_ACCESS_TOKEN,
+      api_endpoint: GITHUB_ENTERPRISE_API
   end
 
   def process_pull_request(pull_request)
@@ -11,12 +13,12 @@ class GithubClient
       options: pivotal_story_information
   end
 
-  def set_status(pull_request, state: '', options: {})
+  def set_status(pull_request, state: '')
     @client.create_status \
       pull_request['base']['repo']['full_name'],
       pull_request['head']['sha'],
       state,
-      options
+      context: 'Pivotal Acceptance State'
   end
 
   private
