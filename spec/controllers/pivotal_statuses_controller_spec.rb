@@ -5,7 +5,9 @@ def app
 end
 
 describe PivotalStatusesController do
-  let(:payload) { File.read('spec/fixtures/webhook_pr_payload.json') }
+  let(:payload) { File.read('spec/fixtures/webhook_pr_payload.json')}
+  let(:response) { JSON.parse(last_response.body) }
+
   describe 'When the Pivotal State' do
     describe 'is accepted' do
       before do
@@ -15,8 +17,8 @@ describe PivotalStatusesController do
       end
       it 'sets the status to success' do
         header 'X-GitHub-Event', 'pull_request'
-        post '/accepted_status_check', payload: payload
-        expect(last_response.body).to include('success')
+        post '/accepted_status_check', payload
+        expect(response['state']).to eq 'success'
       end
     end
     describe 'is not accepted' do
@@ -27,8 +29,8 @@ describe PivotalStatusesController do
       end
       it 'sets the status to failure' do
         header 'X-GitHub-Event', 'pull_request'
-        post '/accepted_status_check', payload: payload
-        expect(last_response.body).to include('failure')
+        post '/accepted_status_check', payload
+        expect(response['state']).to eq 'failure'
       end
     end
   end
