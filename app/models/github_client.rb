@@ -3,6 +3,8 @@ class GithubClient
     @client = Octokit::Client.new \
       access_token: GITHUB_ACCESS_TOKEN,
       api_endpoint: GITHUB_ENTERPRISE_API
+
+    require "pry"; binding.pry
   end
 
   def process_pull_request(pull_request)
@@ -19,6 +21,10 @@ class GithubClient
       pull_request['head']['sha'],
       state,
       options.merge(context: 'Pivotal Acceptance State')
+  end
+
+  def get_branch(pivotal_tracker_id:)
+    require "pry"; binding.pry
   end
 
   private

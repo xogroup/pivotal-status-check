@@ -3,12 +3,12 @@ require_relative '../spec_helper'
 describe 'GithubClient' do
   PIVOTAL_TRACKER_TOKEN = '1234567'.freeze
 
+  let(:subject) { GithubClient.new }
+
   context '#process_pull_request' do
     let(:pull_request) do
       JSON.parse(File.read('spec/fixtures/pull_request_payload.json'))
     end
-
-    let(:subject) { GithubClient.new }
     let(:project) { double('project', story: story) }
     let(:story) { double('story', url: '') }
 
@@ -44,6 +44,11 @@ describe 'GithubClient' do
           subject.process_pull_request(pull_request)
         end
       end
+    end
+  end
+  context '#get_branch' do
+    it "returns the stuff" do
+      subject.get_branch(pivotal_tracker_id: '123')
     end
   end
 end

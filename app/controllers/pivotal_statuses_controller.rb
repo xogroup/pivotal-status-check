@@ -15,6 +15,7 @@ class PivotalStatusesController < ApplicationController
     @github_client ||= GithubClient.new
     @payload = JSON.parse(request.body.read)
     if @payload["highlight"] == "accepted"
+      @github_client.get_branch(@payload['primary_resources'].first["id"])
       require "pry"; binding.pry
     end
   end
