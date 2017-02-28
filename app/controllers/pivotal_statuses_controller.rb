@@ -14,9 +14,20 @@ class PivotalStatusesController < ApplicationController
   post '/accepted' do
     @github_client ||= GithubClient.new
     @payload = JSON.parse(request.body.read)
-    if @payload["highlight"] == "accepted"
-      @github_client.get_branch(@payload['primary_resources'].first["id"])
-      require "pry"; binding.pry
+
+    story_id = @payload['primary_resources'].first['id']
+    branch = @github_client.find_branch(story_id)
+
+    if @payload['highlight'] == 'accepted'
+      json @github_client.set_status \
+        name: branch[:name],
+        sha: branch[:sha],
+        state: 'success'
+    else
+      json @github_client.set_status \
+        name: branch[:name],
+        sha: branch[:sha],
+        state: 'failure'
     end
   end
 end

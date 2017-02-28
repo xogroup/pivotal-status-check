@@ -24,7 +24,8 @@ describe 'GithubClient' do
             .to receive(:accepted?).and_return true
 
           expect(subject).to receive(:set_status).with \
-            kind_of(Hash),
+            'pivotal-status-check',
+            'ba337a3b508599d9dfd28420eff2a8d42a90072f',
             state: 'success',
             options: kind_of(Hash)
 
@@ -37,7 +38,8 @@ describe 'GithubClient' do
             .to receive(:accepted?).and_return false
 
           expect(subject).to receive(:set_status).with \
-            kind_of(Hash),
+            'pivotal-status-check',
+            'ba337a3b508599d9dfd28420eff2a8d42a90072f',
             state: 'failure',
             options: kind_of(Hash)
 
@@ -46,9 +48,27 @@ describe 'GithubClient' do
       end
     end
   end
-  context '#get_branch' do
-    it "returns the stuff" do
-      subject.get_branch(pivotal_tracker_id: '123')
+  context '#find_branch' do
+    let(:branches) do
+      [
+        {
+          name: 'feature/some_branch_123',
+          commit:
+          {
+            sha: '6a5ba717d80a8012b26b1c27887f26bd324c9633',
+            url: 'github.com'
+          }
+        }
+      ]
+    end
+
+    before do
+      allow_any_instance_of(GithubClient)
+        .to receive(:branches).and_return branches
+    end
+
+    it 'returns the branch that matches the pivotal story id' do
+      subject.find_branch(pivotal_tracker_id: '123')
     end
   end
 end
