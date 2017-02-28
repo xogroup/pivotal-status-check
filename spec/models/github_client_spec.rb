@@ -3,7 +3,7 @@ require_relative '../spec_helper'
 describe 'GithubClient' do
   PIVOTAL_TRACKER_TOKEN = '1234567'.freeze
   GITHUB_REPO = 'org/repo'.freeze
-  
+
   let(:subject) { GithubClient.new }
 
   context '#process_pull_request' do
@@ -64,7 +64,7 @@ describe 'GithubClient' do
     end
 
     before do
-      allow_any_instance_of(GithubClient)
+      allow_any_instance_of(Octokit::Client)
         .to receive(:branches).and_return branches
     end
 
