@@ -1,4 +1,5 @@
 .env
+dockerhub
 
 # Elastic Beanstalk Files
 .elasticbeanstalk/*
