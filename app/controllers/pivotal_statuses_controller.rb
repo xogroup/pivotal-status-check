@@ -10,4 +10,12 @@ class PivotalStatusesController < ApplicationController
       end
     end
   end
+
+  post '/accepted' do
+    @github_client ||= GithubClient.new
+    @payload = JSON.parse(request.body.read)
+    if @payload["highlight"] == "accepted"
+      require "pry"; binding.pry
+    end
+  end
 end
