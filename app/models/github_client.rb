@@ -8,17 +8,24 @@ class GithubClient
   def process_pull_request(pull_request)
     @pivotal = PivotalClient.new(pull_request)
     set_status \
-      pull_request,
+      pull_request['base']['repo']['full_name'],
+      pull_request['head']['sha'],
       state: @pivotal.accepted? ? 'success' : 'failure',
       options: pivotal_story_information
   end
 
-  def set_status(pull_request, state: '', options: {})
+  def set_status(name: '', sha: '', state: '', options: {})
     @client.create_status \
-      pull_request['base']['repo']['full_name'],
-      pull_request['head']['sha'],
+      name,
+      sha,
       state,
       options.merge(context: 'Pivotal Acceptance State')
+  end
+
+  def find_branch(pivotal_tracker_id: '')
+    @client.branches(GITHUB_REPO).find do |branch|
+      branch[:name].include?(pivotal_tracker_id)
+    end
   end
 
   private

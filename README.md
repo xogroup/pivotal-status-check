@@ -19,8 +19,9 @@ Our pull requests get merged into Master (and deployed to Production) once they 
 1. Pull down docker image:  [Dockerhub](https://hub.docker.com/r/justneph/pivotal-status-check/)
 1. Set up your deployment environment (```eb create```, etc)
 1. Run the release command related to that application deployment environment
-1. Setup your environment with these environment variables
+1. Setup your environment with these environment variables (see ```.env.default```)
   * Github Token [**GITHUB_ACCESS_TOKEN**]
+  * Github Org/Repository [**GITHUB_REPO**]
   * Pivotal API Token [**PIVOTAL_TRACKER_TOKEN**]
   * Pivotal Project ID [**PIVOTAL_PROJECT_ID**]
 
@@ -32,13 +33,15 @@ Our pull requests get merged into Master (and deployed to Production) once they 
     * ***Let me select individual events.***
     * Choose the following events:
       * Pull request
+1. Set up your [webhook](https://www.pivotaltracker.com/help/articles/activity_webhook/) on your Pivotal Project
+  * **YOUR_APPLICATION_URL/accepted**
 1. Github branch format with Pivotal Story ID at the end (snakecase) (*eg:* ```some_feature_PIVOTAL_STORY_ID``` )
 
 1. Profit
 
 ### Note
 
-You will need to deploy a **NEW** instance for **EACH** Pivotal Project Id.
+Pivotal Projects are associated with Github Repositories so you will need to deploy a **NEW** instance for EACH **Pivotal Project ID** for EACH **Github Repository**.
 
 ## Deployment
 
