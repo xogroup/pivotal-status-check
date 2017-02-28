@@ -3,6 +3,8 @@ machine:
     - docker
 
 dependencies:
+  pre:
+    - openssl aes-256-cbc -d -in dockerhub -k $KEY >> ~/.circlerc
   override:
     - docker info
 
