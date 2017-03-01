@@ -15,10 +15,13 @@ class PivotalStatusesController < ApplicationController
     @github_client ||= GithubClient.new
     @payload = JSON.parse(request.body.read)
 
-    story_id = @payload['primary_resources'].first['id']
-    branch = @github_client.find_branch(story_id)
+    story_id = @payload['primary_resources'].first['id'].to_s
+    branch = @github_client.find_branch(pivotal_tracker_id: story_id)
+    require "pry"; binding.pry
+    json {error: 'No branch with that Story ID'} unless branch
 
     if @payload['highlight'] == 'accepted'
+      require "pry"; binding.pry
       json @github_client.set_status \
         name: branch[:name],
         sha: branch[:sha],
