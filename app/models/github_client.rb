@@ -8,16 +8,15 @@ class GithubClient
   def process_pull_request(pull_request)
     @pivotal = PivotalClient.new(pull_request)
     set_status \
-      pull_request['base']['repo']['full_name'],
-      pull_request['head']['sha'],
+      pull_request: pull_request,
       state: @pivotal.accepted? ? 'success' : 'failure',
       options: pivotal_story_information
   end
 
-  def set_status(name: '', sha: '', state: '', options: {})
+  def set_status(name: nil, sha: nil, state: '', options: {}, pull_request: {})
     @client.create_status \
-      name,
-      sha,
+      name || pull_request.dig('base','repo','full_name'),
+      sha || pull_request.dig('head','sha'),
       state,
       options.merge(context: 'Pivotal Acceptance State')
   end

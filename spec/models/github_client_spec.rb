@@ -1,3 +1,4 @@
+
 require_relative '../spec_helper'
 
 describe 'GithubClient' do
@@ -5,11 +6,11 @@ describe 'GithubClient' do
   GITHUB_REPO = 'org/repo'.freeze
 
   let(:subject) { GithubClient.new }
+  let(:pull_request) do
+    JSON.parse(File.read('spec/fixtures/pull_request_payload.json'))
+  end
 
   context '#process_pull_request' do
-    let(:pull_request) do
-      JSON.parse(File.read('spec/fixtures/pull_request_payload.json'))
-    end
     let(:project) { double('project', story: story) }
     let(:story) { double('story', url: '') }
 
@@ -25,8 +26,7 @@ describe 'GithubClient' do
             .to receive(:accepted?).and_return true
 
           expect(subject).to receive(:set_status).with \
-            'pivotal-status-check',
-            'ba337a3b508599d9dfd28420eff2a8d42a90072f',
+            pull_request: pull_request,
             state: 'success',
             options: kind_of(Hash)
 
@@ -39,14 +39,40 @@ describe 'GithubClient' do
             .to receive(:accepted?).and_return false
 
           expect(subject).to receive(:set_status).with \
-            'pivotal-status-check',
-            'ba337a3b508599d9dfd28420eff2a8d42a90072f',
+            pull_request: pull_request,
             state: 'failure',
             options: kind_of(Hash)
 
           subject.process_pull_request(pull_request)
         end
       end
+    end
+  end
+  context '#set_status' do
+    it 'handles a pull request argument' do
+      allow_any_instance_of(PivotalClient)
+        .to receive(:accepted?).and_return true
+
+      expect_any_instance_of(Octokit::Client).to receive(:create_status).with \
+        'pivotal-status-check',
+        'ba337a3b508599d9dfd28420eff2a8d42a90072f',
+        'pending',
+        context: 'Pivotal Acceptance State'
+
+      subject.set_status(pull_request: pull_request, state: 'pending')
+    end
+
+    it 'handles specific name and sha arguments' do
+      allow_any_instance_of(PivotalClient)
+        .to receive(:accepted?).and_return true
+
+      expect_any_instance_of(Octokit::Client).to receive(:create_status).with \
+        'branch/thing',
+        '123',
+        'pending',
+        context: 'Pivotal Acceptance State'
+
+      subject.set_status(name: 'branch/thing', sha: '123', state: 'pending')
     end
   end
   context '#find_branch' do

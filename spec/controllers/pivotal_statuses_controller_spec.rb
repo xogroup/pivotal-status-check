@@ -36,8 +36,6 @@ describe PivotalStatusesController do
       end
 
       describe 'and the Pivotal webhook fires' do
-
-
         before do
           allow_any_instance_of(GithubClient).to receive(:find_branch)
             .and_return branch
