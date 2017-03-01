@@ -53,9 +53,11 @@ describe 'GithubClient' do
       allow_any_instance_of(PivotalClient)
         .to receive(:accepted?).and_return true
 
-      expect(subject).to receive(:set_status).with \
-        pull_request: pull_request,
-        state: 'pending'
+      expect_any_instance_of(Octokit::Client).to receive(:create_status).with \
+        'pivotal-status-check',
+        'ba337a3b508599d9dfd28420eff2a8d42a90072f',
+        'pending',
+        context: 'Pivotal Acceptance State'
 
       subject.set_status(pull_request: pull_request, state: 'pending')
     end
@@ -64,10 +66,11 @@ describe 'GithubClient' do
       allow_any_instance_of(PivotalClient)
         .to receive(:accepted?).and_return true
 
-      expect(subject).to receive(:set_status).with \
-        name: 'branch/thing',
-        sha: '123',
-        state: 'pending'
+      expect_any_instance_of(Octokit::Client).to receive(:create_status).with \
+        'branch/thing',
+        '123',
+        'pending',
+        context: 'Pivotal Acceptance State'
 
       subject.set_status(name: 'branch/thing', sha: '123', state: 'pending')
     end
