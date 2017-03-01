@@ -13,17 +13,18 @@ class GithubClient
       options: pivotal_story_information
   end
 
-  def set_status(name: nil, sha: nil, state: '', options: {}, pull_request: {})
+  def set_status(repo_name: nil, sha: nil, state: '', options: {}, pull_request: {})
     @client.create_status \
-      name || pull_request.dig('base','repo','full_name'),
+      repo_name || pull_request.dig('base','repo','full_name'),
       sha || pull_request.dig('head','sha'),
       state,
       options.merge(context: 'Pivotal Acceptance State')
   end
 
   def find_branch(pivotal_tracker_id: '')
-    @client.branches(GITHUB_REPO).find do |branch|
-      branch[:name].include?(pivotal_tracker_id)
+    @client.pull_requests(GITHUB_REPO).find do |pr|
+      branch_name = pr.head.ref
+      branch_name.include?(pivotal_tracker_id)
     end
   end
 

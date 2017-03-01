@@ -74,6 +74,14 @@ describe PivotalStatusesController do
           post '/accepted', pivotal_failure_payload
           expect(response['state']).to eq 'failure'
         end
+
+        it 'returns an error if there is no pull request with that story id' do
+          allow_any_instance_of(GithubClient).to receive(:find_branch)
+            .and_return nil
+
+          post '/accepted', pivotal_failure_payload
+          expect(response).to include "error"
+        end
       end
     end
   end
