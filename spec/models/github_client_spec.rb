@@ -72,30 +72,28 @@ describe 'GithubClient' do
         'pending',
         context: 'Pivotal Acceptance State'
 
-      subject.set_status(name: 'branch/thing', sha: '123', state: 'pending')
+      subject.set_status(repo_name: 'branch/thing', sha: '123', state: 'pending')
     end
   end
   context '#find_branch' do
-    let(:branches) do
-      [
-        {
-          name: 'feature/some_branch_123',
-          commit:
-          {
-            sha: '6a5ba717d80a8012b26b1c27887f26bd324c9633',
-            url: 'github.com'
-          }
-        }
-      ]
-    end
-
-    before do
-      allow_any_instance_of(Octokit::Client)
-        .to receive(:branches).and_return branches
+    let(:pull_request) do
+      JSON.parse \
+        File.read('spec/fixtures/pull_request_payload.json'),
+        object_class: OpenStruct
     end
 
     it 'returns the branch that matches the pivotal story id' do
-      subject.find_branch(pivotal_tracker_id: '123')
+      allow_any_instance_of(Octokit::Client)
+        .to receive(:pull_requests).and_return [pull_request]
+
+      expect(subject.find_branch(pivotal_tracker_id: '123')).to_not be_nil
+    end
+
+    it 'returns nil if nothing is found' do
+      allow_any_instance_of(Octokit::Client)
+        .to receive(:pull_requests).and_return [pull_request]
+
+      expect(subject.find_branch(pivotal_tracker_id: '456')).to be nil
     end
   end
 end

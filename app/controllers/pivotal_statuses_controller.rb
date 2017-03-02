@@ -15,25 +15,24 @@ class PivotalStatusesController < ApplicationController
     @github_client ||= GithubClient.new
     @payload = JSON.parse(request.body.read)
 
-    story_id = '140456763'#@payload['primary_resources'].first['id'].to_s
+    story_id = @payload['primary_resources'].first['id'].to_s
     branch = @github_client.find_branch(pivotal_tracker_id: story_id)
-
     return json error: 'No branch with that Story ID' if branch.nil?
 
-    if true#@payload['highlight'] == 'accepted'
+    if @payload['highlight'] == 'accepted'
       @github_client.set_status \
         repo_name: branch.base.repo.full_name,
         sha: branch.head.sha,
         state: 'success'
 
-      json message: "#{branch.head.ref} state changed to success"
+      json state: 'success', message: "#{branch.head.ref} state changed to success"
     else
       @github_client.set_status \
         repo_name: branch.base.repo.full_name,
         sha: branch.head.sha,
         state: 'failure'
 
-      json message: "#{branch.head.ref} state changed to failure"
+      json state: 'failure', message: "#{branch.head.ref} state changed to failure"
     end
   end
 end
