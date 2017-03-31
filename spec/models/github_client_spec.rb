@@ -1,9 +1,11 @@
 
+# frozen_string_literal: true
+
 require_relative '../spec_helper'
 
 describe 'GithubClient' do
-  PIVOTAL_TRACKER_TOKEN = '1234567'.freeze
-  GITHUB_REPO = 'org/repo'.freeze
+  PIVOTAL_TRACKER_TOKEN = '1234567'
+  GITHUB_REPO = 'org/repo'
 
   let(:subject) { GithubClient.new }
   let(:pull_request) do
