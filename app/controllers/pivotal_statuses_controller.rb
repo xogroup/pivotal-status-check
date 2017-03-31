@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class PivotalStatusesController < ApplicationController
   post '/accepted_status_check' do
     @github_client ||= GithubClient.new
@@ -5,8 +7,14 @@ class PivotalStatusesController < ApplicationController
     case request.env['HTTP_X_GITHUB_EVENT']
     when 'pull_request'
       if %w(opened reopened synchronize).include? @payload['action']
-        @github_client.set_status(pull_request: @payload['pull_request'], state: 'pending')
-        json @github_client.process_pull_request(@payload['pull_request'])
+        story_id = @payload['pull_request']['id'].to_s
+        branch = @github_client.find_branch(pivotal_tracker_id: story_id)
+        if branch.nil?
+          return json error: 'No branch with a pivotal story id'
+        else
+          @github_client.set_status(pull_request: @payload['pull_request'], state: 'pending')
+          json @github_client.process_pull_request(@payload['pull_request'])
+        end
       end
     end
   end
