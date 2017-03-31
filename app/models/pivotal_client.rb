@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Temporary hack for the pivotal gem since it's bugged
 # require 'tracker_api/endpoints/story'
 

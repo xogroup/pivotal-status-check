@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class GithubClient
   def initialize
     @client = Octokit::Client.new \
@@ -26,6 +28,11 @@ class GithubClient
       branch_name = pr.head.ref
       branch_name.include?(pivotal_tracker_id)
     end
+  end
+
+  def story_id?(pull_request)
+    branch_name = pull_request.dig('head', 'ref')
+    branch_name.split('_').last.match?(/\A\d+\z/) ? true : false
   end
 
   private

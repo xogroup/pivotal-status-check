@@ -1,9 +1,11 @@
 
+# frozen_string_literal: true
+
 require_relative '../spec_helper'
 
 describe 'GithubClient' do
-  PIVOTAL_TRACKER_TOKEN = '1234567'.freeze
-  GITHUB_REPO = 'org/repo'.freeze
+  PIVOTAL_TRACKER_TOKEN = '1234567'
+  GITHUB_REPO = 'org/repo'
 
   let(:subject) { GithubClient.new }
   let(:pull_request) do
@@ -94,6 +96,17 @@ describe 'GithubClient' do
         .to receive(:pull_requests).and_return [pull_request]
 
       expect(subject.find_branch(pivotal_tracker_id: '456')).to be nil
+    end
+  end
+  context '#story_id?' do
+    it 'returns nil if there is no story id' do
+      pull_request['head']['ref'] = 'branch'
+
+      expect(subject.story_id?(pull_request)).to be false
+    end
+
+    it 'returns the story id from a branch name' do
+      expect(subject.story_id?(pull_request)).to be true
     end
   end
 end

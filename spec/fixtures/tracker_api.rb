@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module TrackerApi
   class Client
     def initialize(token:); end

@@ -7,13 +7,11 @@ class PivotalStatusesController < ApplicationController
     case request.env['HTTP_X_GITHUB_EVENT']
     when 'pull_request'
       if %w(opened reopened synchronize).include? @payload['action']
-        story_id = @payload['pull_request']['id'].to_s
-        branch = @github_client.find_branch(pivotal_tracker_id: story_id)
-        if branch.nil?
-          return json error: 'No branch with a pivotal story id'
-        else
+        if @github_client.story_id?(@payload['pull_request'])
           @github_client.set_status(pull_request: @payload['pull_request'], state: 'pending')
           json @github_client.process_pull_request(@payload['pull_request'])
+        else
+          return json error: 'No branch with a pivotal story id'
         end
       end
     end
@@ -32,7 +30,7 @@ class PivotalStatusesController < ApplicationController
         repo_name: branch.base.repo.full_name,
         sha: branch.head.sha,
         state: 'success',
-        options: {target_url: @payload['primary_resources'].first['url'] }
+        options: { target_url: @payload['primary_resources'].first['url'] }
 
       json state: 'success', message: "#{branch.head.ref} state changed to success"
     else
@@ -40,7 +38,7 @@ class PivotalStatusesController < ApplicationController
         repo_name: branch.base.repo.full_name,
         sha: branch.head.sha,
         state: 'failure',
-        options: {target_url: @payload['primary_resources'].first['url'] }
+        options: { target_url: @payload['primary_resources'].first['url'] }
 
       json state: 'failure', message: "#{branch.head.ref} state changed to failure"
     end
