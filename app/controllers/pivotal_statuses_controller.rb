@@ -20,7 +20,8 @@ class PivotalStatusesController < ApplicationController
   post '/accepted' do
     @github_client ||= GithubClient.new
     @payload = JSON.parse(request.body.read)
-    require 'pry'; story_id = @payload['primary_resources'].first['id'].to_s
+
+    story_id = @payload['primary_resources'].first['id'].to_s
     branch = @github_client.find_branch(pivotal_tracker_id: story_id)
     return json error: 'No branch with that Story ID' if branch.nil?
 
