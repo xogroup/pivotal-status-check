@@ -24,8 +24,8 @@ describe PivotalStatusesController do
           allow_any_instance_of(GithubClient).to receive(:set_status)
           allow_any_instance_of(GithubClient).to receive(:process_pull_request)
             .and_return(state: 'success')
-          allow_any_instance_of(GithubClient).to receive(:find_branch)
-            .and_return(branch)
+          allow_any_instance_of(GithubClient).to receive(:story_id?)
+            .and_return(true)
         end
         it 'sets the status of the pull request to success' do
           header 'X-GitHub-Event', 'pull_request'
@@ -54,8 +54,8 @@ describe PivotalStatusesController do
           allow_any_instance_of(GithubClient).to receive(:set_status)
           allow_any_instance_of(GithubClient).to receive(:process_pull_request)
             .and_return(state: 'failure')
-          allow_any_instance_of(GithubClient).to receive(:find_branch)
-            .and_return(branch)
+          allow_any_instance_of(GithubClient).to receive(:story_id?)
+            .and_return(true)
         end
         it 'sets the status of the pull request to failure' do
           header 'X-GitHub-Event', 'pull_request'
