@@ -35,19 +35,10 @@ describe PivotalStatusesController do
       end
 
       describe 'and the Pivotal webhook fires' do
-        let(:set_status_params) do
-          {
-            repo_name: 'pivotal-status-check',
-            sha: 'ba337a3b508599d9dfd28420eff2a8d42a90072f',
-            state: 'success'
-          }
-        end
-
         before do
           allow_any_instance_of(GithubClient).to receive(:find_branch)
             .and_return branch
-          allow_any_instance_of(GithubClient).to receive(:set_status)
-            .with(set_status_params)
+          allow_any_instance_of(Octokit::Client).to receive(:create_status)
             .and_return(state: 'success')
         end
 
@@ -73,18 +64,10 @@ describe PivotalStatusesController do
         end
       end
       describe 'and the Pivotal webhook fires' do
-        let(:set_status_params) do
-          {
-            repo_name: 'pivotal-status-check',
-            sha: 'ba337a3b508599d9dfd28420eff2a8d42a90072f',
-            state: 'failure'
-          }
-        end
         before do
           allow_any_instance_of(GithubClient).to receive(:find_branch)
             .and_return branch
-          allow_any_instance_of(GithubClient).to receive(:set_status)
-            .with(set_status_params)
+          allow_any_instance_of(Octokit::Client).to receive(:create_status)
             .and_return(state: 'failure')
         end
 
