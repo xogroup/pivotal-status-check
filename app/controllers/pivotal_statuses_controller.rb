@@ -31,14 +31,16 @@ class PivotalStatusesController < ApplicationController
       @github_client.set_status \
         repo_name: branch.base.repo.full_name,
         sha: branch.head.sha,
-        state: 'success'
+        state: 'success',
+        options: {target_url: @payload['primary_resources'].first['url'] }
 
       json state: 'success', message: "#{branch.head.ref} state changed to success"
     else
       @github_client.set_status \
         repo_name: branch.base.repo.full_name,
         sha: branch.head.sha,
-        state: 'failure'
+        state: 'failure',
+        options: {target_url: @payload['primary_resources'].first['url'] }
 
       json state: 'failure', message: "#{branch.head.ref} state changed to failure"
     end

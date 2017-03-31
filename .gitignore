@@ -7,3 +7,4 @@ dockerhub
 !.elasticbeanstalk/*.global.yml
 
 .tags
+.tags1
