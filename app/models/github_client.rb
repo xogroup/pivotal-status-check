@@ -32,7 +32,7 @@ class GithubClient
 
   def story_id?(pull_request)
     branch_name = pull_request.dig('head', 'ref')
-    branch_name.split('_').last
+    branch_name.split('_').last.match?(/\A\d+\z/) ? true : false
   end
 
   private

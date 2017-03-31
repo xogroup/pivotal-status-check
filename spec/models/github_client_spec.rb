@@ -98,4 +98,15 @@ describe 'GithubClient' do
       expect(subject.find_branch(pivotal_tracker_id: '456')).to be nil
     end
   end
+  context '#story_id?' do
+    it 'returns nil if there is no story id' do
+      pull_request['head']['ref'] = 'branch'
+
+      expect(subject.story_id?(pull_request)).to be false
+    end
+
+    it 'returns the story id from a branch name' do
+      expect(subject.story_id?(pull_request)).to be true
+    end
+  end
 end
