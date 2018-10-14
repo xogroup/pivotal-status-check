@@ -17,7 +17,7 @@ group :development do
 end
 
 group :test do
-  gem 'capybara'
+  gem 'capybara', '>= 2.12.1'
   gem 'rack-test'
   gem 'rspec'
 end
